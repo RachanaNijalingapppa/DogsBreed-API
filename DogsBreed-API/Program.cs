@@ -9,11 +9,11 @@ var jsonPath = Path.Combine(dataPath, "dogs.json");
 if (!Directory.Exists(dataPath))
 {
     Directory.CreateDirectory(dataPath);
-    var jsonPath = Path.Combine(dataPath, "dogs.json");
-    if (!File.Exists(jsonPath))
-    {
-        await File.WriteAllTextAsync(jsonPath, "[]");
-    }
+}
+
+if (!File.Exists(jsonPath))
+{
+    await File.WriteAllTextAsync(jsonPath, "[]");
 }
 
 if (!File.Exists(jsonPath))
