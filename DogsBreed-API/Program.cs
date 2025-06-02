@@ -7,6 +7,11 @@ var dataPath = Path.Combine(AppContext.BaseDirectory, "Data");
 if (!Directory.Exists(dataPath))
 {
     Directory.CreateDirectory(dataPath);
+    var jsonPath = Path.Combine(dataPath, "dogs.json");
+    if (!File.Exists(jsonPath))
+    {
+        await File.WriteAllTextAsync(jsonPath, "[]");
+    }
 }
 
 // Register your custom service here
