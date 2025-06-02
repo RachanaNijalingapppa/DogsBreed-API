@@ -9,6 +9,8 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+# Create Data directory in base image (for debugging)
+RUN mkdir -p /app/Data
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
@@ -29,4 +31,9 @@ RUN dotnet publish "./DogsBreed-API.csproj" -c %BUILD_CONFIGURATION% -o /app/pub
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+# Ensure Data directory exists and copy dogs.json
+RUN mkdir -p /app/Data
+COPY Data/dogs.json /app/Data/
+
 ENTRYPOINT ["dotnet", "DogsBreed-API.dll"]

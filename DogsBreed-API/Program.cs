@@ -3,6 +3,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+var dataPath = Path.Combine(AppContext.BaseDirectory, "Data");
+if (!Directory.Exists(dataPath))
+{
+    Directory.CreateDirectory(dataPath);
+}
+
 // Register your custom service here
 builder.Services.AddScoped<DogBreeds.Services.DogBreedService>();
 
