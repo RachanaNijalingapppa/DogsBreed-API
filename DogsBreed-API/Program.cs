@@ -27,4 +27,12 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=DogBreeds}/{action=Index}/{id?}");
 
+// Redirect root to Home/Index
+app.MapGet("/", context =>
+{
+    context.Response.Redirect("/DogBreeds/Index");
+    return Task.CompletedTask;
+});
+
+
 app.Run();
