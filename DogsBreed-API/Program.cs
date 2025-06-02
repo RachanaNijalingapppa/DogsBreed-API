@@ -3,7 +3,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-var dataPath = Path.Combine(AppContext.BaseDirectory, "Data");
+var dataPath = Path.Combine(Directory.GetCurrentDirectory(), "Data");
+var jsonPath = Path.Combine(dataPath, "dogs.json");
+
 if (!Directory.Exists(dataPath))
 {
     Directory.CreateDirectory(dataPath);
@@ -12,6 +14,11 @@ if (!Directory.Exists(dataPath))
     {
         await File.WriteAllTextAsync(jsonPath, "[]");
     }
+}
+
+if (!File.Exists(jsonPath))
+{
+    await File.WriteAllTextAsync(jsonPath, "[]");
 }
 
 // Register your custom service here
