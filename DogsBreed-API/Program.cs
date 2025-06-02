@@ -16,11 +16,6 @@ if (!File.Exists(jsonPath))
     await File.WriteAllTextAsync(jsonPath, "[]");
 }
 
-if (!File.Exists(jsonPath))
-{
-    await File.WriteAllTextAsync(jsonPath, "[]");
-}
-
 // Register your custom service here
 builder.Services.AddScoped<DogBreeds.Services.DogBreedService>();
 
