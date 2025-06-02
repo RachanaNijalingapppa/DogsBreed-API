@@ -1,0 +1,134 @@
+:root {
+    --primary-color: #4e73df;
+    --secondary-color: #858796;
+    --accent-color: #f6c23e;
+    --light-bg: #f8f9fc;
+}
+
+@keyframes tailWag {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(15deg);
+    }
+
+    75% {
+        transform: rotate(-15deg);
+    }
+}
+
+/* Header styles */
+.header-container {
+    background: url('https://placedog.net/1200/300') center/cover;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+    .header-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(78, 115, 223, 0.85);
+    }
+
+    .header-container > * {
+        position: relative;
+        z-index: 1;
+    }
+
+/* Breed card styles */
+.breed-card {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+    .breed-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        border-color: var(--primary-color);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+/* Button styles */
+.btn-outline-primary {
+    transition: all 0.3s ease;
+}
+
+    .btn-outline-primary:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+/* Fun fact animation */
+.fade-out {
+    animation: fadeOut 1s ease-out;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+/* Dog icon animations */
+.fa-dog, .fa-paw {
+    transition: all 0.3s ease;
+}
+
+.fa-bone {
+    animation: tailWag 0.5s infinite;
+}
+
+/*body {
+    background-color: var(--light-bg);
+    font-family: 'Nunito', sans-serif;
+}
+
+.card {
+    border: none;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}*/
+
+/* Animation for form inputs */
+/*.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+    transition: all 0.3s ease;
+}*/
+
+/* Custom scrollbar */
+/*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}*/

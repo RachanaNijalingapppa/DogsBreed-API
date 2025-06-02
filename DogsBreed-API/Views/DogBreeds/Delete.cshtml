@@ -1,0 +1,47 @@
+﻿@model DogBreeds.Models.DogBreed
+
+@{
+    ViewData["Title"] = "Delete Breed";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <h3>Are you sure you want to delete this breed?</h3>
+    <div class="card mt-3">
+        <div class="card-body">
+            <h4 class="card-title">@Model.Name</h4>
+            @if (Model.SubBreeds.Any())
+            {
+                <p class="card-text">
+                    <strong>Sub-breeds:</strong> @string.Join(", ", Model.SubBreeds)
+                </p>
+            }
+            else
+            {
+                <p class="card-text text-muted">No sub-breeds</p>
+            }
+        </div>
+    </div>
+
+    <form asp-action="Delete" method="post" class="mt-4">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Name" />
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash-alt"></i> Confirm Delete
+            </button>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>

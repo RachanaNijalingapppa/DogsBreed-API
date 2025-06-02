@@ -1,0 +1,162 @@
+﻿@model List<DogBreeds.Models.DogBreed>
+
+@{
+    ViewData["Title"] = "Bark-tastic Breed Directory";
+}
+
+<div class="header-container text-center py-5 mb-5 rounded-3">
+    <h1 class="display-4 fw-bold text-white">
+        <i class="fas fa-paw"></i> @ViewData["Title"] <i class="fas fa-bone"></i>
+    </h1>
+    <p class="lead text-white">Where every pup gets their moment in the spotlight!</p>
+    <div class="d-flex justify-content-center gap-3 mt-3">
+        <a asp-action="Create" class="btn btn-success btn-lg shadow">
+            <i class="fas fa-plus"></i> Add a New Tail-ender
+        </a>
+        <button id="funFactBtn" class="btn btn-warning btn-lg shadow">
+            <i class="fas fa-dog"></i> Random Doggo Fact
+        </button>
+    </div>
+    <div id="funFactDisplay" class="alert alert-info mt-3 d-none w-75 mx-auto"></div>
+</div>
+
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var breed in Model)
+        {
+            <div class="col">
+                <div class="card breed-card h-100 shadow-sm border-0">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">
+                            <i class="fas @(breed.Name.Length > 6 ? "fa-dog" : "fa-paw") me-2"></i>
+                            @breed.Name.ToUpper()
+                        </h3>
+                        <span class="badge bg-light text-dark py-2">
+                            @(breed.SubBreeds.Count == 0 ? "LONE WOLF" : $"{breed.SubBreeds.Count} PUPS")
+                        </span>
+                    </div>
+
+                    <div class="card-body">
+                        @if (breed.SubBreeds.Any())
+                        {
+                            <h5 class="text-muted mb-3">
+                                <i class="fas fa-paw-prints me-2"></i>Sub-Woofers:
+                            </h5>
+                            <div class="subbreeds-container">
+                                @foreach (var sub in breed.SubBreeds)
+                                {
+                                    <span class="badge bg-secondary me-1 mb-1">
+                                        <i class="fas fa-bone me-1"></i> @sub
+                                    </span>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center py-3">
+                                <i class="fas fa-dog fa-3x text-muted mb-3"></i>
+                                <p class="text-muted fst-italic">"I work alone" - This pupper</p>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="card-footer bg-light">
+                        <div class="d-flex justify-content-around">
+                            <a asp-action="Details" asp-route-id="@breed.Name"
+                               class="btn btn-sm btn-outline-primary" title="Sniff Details">
+                                <i class="fas fa-nose"></i> Sniff
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@breed.Name"
+                               class="btn btn-sm btn-outline-warning" title="Edit this Good Boy">
+                                <i class="fas fa-user-edit"></i> Train
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@breed.Name"
+                               class="btn btn-sm btn-outline-danger" title="Send to Farm">
+                                <i class="fas fa-bone"></i> Fetch Away
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .header-container {
+            background: linear-gradient(rgba(78, 115, 223, 0.85), rgba(78, 115, 223, 0.85)), url('https://placedog.net/1200/300') center/cover;
+            margin-bottom: 2rem;
+            border: 3px solid #f6c23e;
+        }
+
+        .breed-card {
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+            .breed-card:hover {
+                transform: translateY(-5px) scale(1.02);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+            }
+
+        .subbreeds-container {
+            max-height: 120px;
+            overflow-y: auto;
+            padding: 5px;
+        }
+
+            /* Custom scrollbar */
+            .subbreeds-container::-webkit-scrollbar {
+                width: 5px;
+            }
+
+            .subbreeds-container::-webkit-scrollbar-thumb {
+                background: var(--primary-color);
+                border-radius: 10px;
+            }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        // Random dog facts
+        const dogFacts = [
+            "Dogs have three eyelids! The third helps keep their eyes moist.",
+            "A dog's nose print is unique, like a human fingerprint!",
+            "The Basenji is the only dog that doesn't bark!",
+            "Dogs can smell your feelings! They detect chemical changes in your sweat.",
+            "The Norwegian Lundehund has six toes on each foot!",
+            "Dogs dream just like humans do! Watch those paws twitch!",
+            "A Bloodhound's sense of smell can be used as evidence in court!",
+            "Dogs have 18 muscles controlling their ears!",
+            "The world's oldest dog lived to be 29 years old!",
+            "Dogs can learn over 100 words and gestures!"
+        ];
+
+        document.getElementById('funFactBtn')?.addEventListener('click', function() {
+            const factDisplay = document.getElementById('funFactDisplay');
+            factDisplay.textContent = dogFacts[Math.floor(Math.random() * dogFacts.length)];
+            factDisplay.classList.remove('d-none');
+
+            setTimeout(() => {
+                factDisplay.classList.add('fade-out');
+                setTimeout(() => {
+                    factDisplay.classList.add('d-none');
+                    factDisplay.classList.remove('fade-out');
+                }, 1000);
+            }, 5000);
+        });
+
+        // Add bounce animation to dog icons on hover
+        document.querySelectorAll('.breed-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.querySelector('i.fa-dog, i.fa-paw')?.classList.add('fa-bounce');
+            });
+            card.addEventListener('mouseleave', function() {
+                this.querySelector('i.fa-dog, i.fa-paw')?.classList.remove('fa-bounce');
+            });
+        });
+    </script>
+}

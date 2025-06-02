@@ -1,0 +1,106 @@
+﻿@* @model DogBreeds.Models.DogBreed
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<h1>@Model.Name</h1>
+
+<div>
+    <h4>Breed Information</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Sub-Breeds:</dt>
+        <dd class="col-sm-10">@Model.SubBreeds.Count</dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+</div> *@
+
+@model DogBreeds.Models.DogBreed
+
+@{
+    ViewData["Title"] = Model.Name + " Details";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>@ViewData["Title"]
+                        </h3>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.Name" class="btn btn-sm btn-warning me-1">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a asp-action="Index" class="btn btn-sm btn-light">
+                                <i class="fas fa-list"></i> All Breeds
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h4 class="text-primary mb-4">
+                                <i class="fas fa-dog me-2"></i>@Model.Name
+                            </h4>
+
+                            @if (Model.SubBreeds.Any())
+                            {
+                                <h5 class="mt-4 mb-3">
+                                    <i class="fas fa-code-branch me-2"></i>Sub-Breeds
+                                </h5>
+                                <div class="subbreeds-grid">
+                                    @foreach (var sub in Model.SubBreeds)
+                                    {
+                                        <span class="subbreed-badge">
+                                            <i class="fas fa-paw me-1"></i>@sub
+                                        </span>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info mt-4">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    No sub-breeds registered for this breed
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-4">
+                            <div class="breed-image-placeholder rounded text-center p-4 bg-light">
+                                <i class="fas fa-dog fa-5x text-muted mb-3"></i>
+                                <p class="text-muted">Breed image placeholder</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .subbreeds-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+    }
+
+    .subbreed-badge {
+        display: inline-block;
+        padding: 8px 12px;
+        background-color: #f8f9fa;
+        border-radius: 20px;
+        border: 1px solid #dee2e6;
+    }
+
+    .breed-image-placeholder {
+        border: 2px dashed #dee2e6;
+    }
+</style>

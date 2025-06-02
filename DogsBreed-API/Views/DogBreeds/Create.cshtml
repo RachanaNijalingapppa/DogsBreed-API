@@ -1,0 +1,191 @@
+﻿@* @model DogBreeds.Models.DogBreed
+@{
+    ViewData["Title"] = "Add New Breed";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Create" id="breedForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="form-label">Breed Name *</label>
+                    <input asp-for="Name" class="form-control" placeholder="e.g. Labrador" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="form-label">Sub-Breeds</label>
+                    <div id="subBreedsContainer">
+                        @for (int i = 0; i < Model.SubBreeds.Count; i++)
+                        {
+                            <div class="input-group mb-2 sub-breed-item">
+                                <input name="SubBreeds[@i]"
+                                       value="@Model.SubBreeds[i]"
+                                       class="form-control"
+                                       placeholder="e.g. Golden" />
+                                <button type="button" class="btn btn-outline-danger remove-subbreed">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        }
+                    </div>
+                    <button type="button" id="addSubBreed" class="btn btn-outline-primary mt-2">
+                        <i class="fas fa-plus"></i> Add Sub-Breed
+                    </button>
+                </div>
+
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Create Breed
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+ *@
+
+@model DogBreeds.Models.DogBreed
+@{
+    ViewData["Title"] = ViewContext.RouteData.Values["action"].ToString() + " Breed";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="fas @(ViewContext.RouteData.Values["action"].ToString() == "Create" ? "fa-plus" : "fa-edit") me-2"></i>
+                        @ViewData["Title"]
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="@ViewContext.RouteData.Values["action"]" id="breedForm">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="mb-4">
+                            <label asp-for="Name" class="form-label fw-bold">Breed Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-dog text-primary"></i>
+                                </span>
+                                <input asp-for="Name" class="form-control form-control-lg" placeholder="Enter breed name" />
+                            </div>
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold d-flex justify-content-between">
+                                <span>Sub-Breeds</span>
+                                <button type="button" id="addSubBreed" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-plus me-1"></i> Add Sub-Breed
+                                </button>
+                            </label>
+                            <div id="subBreedsContainer" class="border rounded p-3 bg-light">
+                                @for (int i = 0; i < Model.SubBreeds.Count; i++)
+                                {
+                                    <div class="input-group mb-2 sub-breed-item">
+                                        <span class="input-group-text bg-white">
+                                            <i class="fas fa-paw text-muted"></i>
+                                        </span>
+                                        <input name="SubBreeds[@i]" value="@Model.SubBreeds[i]"
+                                               class="form-control" placeholder="Enter sub-breed name" />
+                                        <button type="button" class="btn btn-outline-danger remove-subbreed">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a asp-action="Index" class="btn btn-lg btn-outline-secondary me-md-2">
+                                <i class="fas fa-arrow-left me-1"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-lg btn-primary">
+                                <i class="fas fa-save me-1"></i> Save Breed
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        #subBreedsContainer {
+            min-height: 100px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .sub-breed-item {
+            transition: all 0.2s ease;
+        }
+
+            .sub-breed-item:hover {
+                transform: scale(1.01);
+            }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('subBreedsContainer');
+            const addButton = document.getElementById('addSubBreed');
+            let subBreedCount = @Model.SubBreeds.Count;
+
+            // Add new sub-breed field
+            addButton.addEventListener('click', function() {
+                const div = document.createElement('div');
+                div.className = 'input-group mb-2 sub-breed-item';
+                div.innerHTML = `
+                    <input name="SubBreeds[${subBreedCount}]"
+                           class="form-control"
+                           placeholder="e.g. Miniature" />
+                    <button type="button" class="btn btn-outline-danger remove-subbreed">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                container.appendChild(div);
+                subBreedCount++;
+            });
+
+            // Remove sub-breed field
+            container.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-subbreed')) {
+                    e.target.closest('.sub-breed-item').remove();
+                    // Re-index remaining inputs
+                    const inputs = container.querySelectorAll('input[name^="SubBreeds"]');
+                    inputs.forEach((input, index) => {
+                        input.name = `SubBreeds[${index}]`;
+                    });
+                    subBreedCount = inputs.length;
+                }
+            });
+        });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
