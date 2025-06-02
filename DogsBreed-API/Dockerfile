@@ -18,6 +18,7 @@ WORKDIR /app
 COPY --from=build /app/publish .
 
 # Ensure dogs.json is copied (and available at runtime)
+RUN mkdir -p ./Data
 COPY Data/dogs.json ./Data/dogs.json
 
 # Expose port 3000 for Render
